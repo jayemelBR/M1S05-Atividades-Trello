@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Preços e Compra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        #totalCarrinho {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Consulta de Preços e Compra</h2>
+
+    <label for="produtoInput">Código ou Nome do Produto:</label>
+    <input type="text" id="produtoInput" placeholder="Digite o código ou nome do produto">
+
+    <button onclick="consultarPreco()">Consultar Valor</button>
+    <button onclick="comprarProduto()">Comprar Produto Consultado</button>
+    <button onclick="calcularTotalCarrinho()">Calcular Total do Carrinho</button>
+
+    <p id="resultado"></p>
+    <p id="totalCarrinho"></p>
+
+    <script>
+        // Variável para armazenar o carrinho de compras
+        let carrinho = [];
+
+        // Função para carregar o carrinho do localStorage no início da aplicação
+        function carregarCarrinhoDoLocalStorage() {
+            let carrinhoSalvo = localStorage.getItem('carrinho');
+            if (carrinhoSalvo) {
+                carrinho = JSON.parse(carrinhoSalvo);
+                atualizarValorTotalCarrinho();
+            }
+        }
+
+        // Chamar a função para carregar o carrinho no início da aplicação
+        carregarCarrinhoDoLocalStorage();
+
+        function consultarPreco() {
+            // Lógica de consulta de preço aqui
+            let produtoInput = document.getElementById('produtoInput').value;
+            let resultado = "O preço do produto '" + produtoInput + "' é R$ 10,00"; // Substitua por sua lógica real de consulta
+            document.getElementById('resultado').innerText = resultado;
+        }
+
+        function comprarProduto() {
+            // Lógica de compra do produto aqui
+            let produtoInput = document.getElementById('produtoInput').value;
+            let preco = 10.00; // Substitua pelo preço real do produto
+            let produto = { nome: produtoInput, preco: preco };
+
+            // Adicionar o produto ao carrinho
+            carrinho.push(produto);
+
+            // Salvar o carrinho no localStorage
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+            let resultado = "Compra realizada com sucesso para o produto '" + produtoInput + "'";
+            document.getElementById('resultado').innerText = resultado;
+
+            // Exibir o conteúdo atualizado do carrinho (opcional)
+            console.log("Carrinho de compras:", carrinho);
+
+            // Atualizar dinamicamente o valor total do carrinho
+            atualizarValorTotalCarrinho();
+        }
+
+        function calcularTotalCarrinho() {
+            let total = 0;
+
+            // Percorrer o carrinho e somar os preços
+            for (var i = 0; i < carrinho.length; i++) {
+                total += carrinho[i].preco;
+            }
+
+            // Exibir o resultado
+            let resultado = "O valor total do carrinho é R$ " + total.toFixed(2);
+            if (total === 0) {
+                resultado = "Carrinho vazio";
+            }
+
+            document.getElementById('resultado').innerText = resultado;
+        }
+
+        function atualizarValorTotalCarrinho() {
+            let total = 0;
+
+            // Percorrer o carrinho e somar os preços
+            for (let i = 0; i < carrinho.length; i++) {
+                total += carrinho[i].preco;
+            }
+
+            // Atualizar dinamicamente o valor total do carrinho
+            document.getElementById('totalCarrinho').innerText = "Valor Total do Carrinho: R$ " + total.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
